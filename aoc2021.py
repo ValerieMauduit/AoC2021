@@ -2,7 +2,7 @@
 import argparse
 
 from all_days import (
-    day00
+    day01
 )
 
 
@@ -13,10 +13,10 @@ def main():
     parser.add_argument('--dir', type=str, help='Input data directory')
     args = parser.parse_args()
 
-    if args.day == 0:
-        day00.run(args.dir, args.star)
+    if args.day == 1:
+        day01.run(args.dir, args.star)
     else:
-        raise Exception("Day isn't already coded")
+        raise Exception(f"Day {args.day} isn't already coded")
 
 
 if __name__ == "__main__":
