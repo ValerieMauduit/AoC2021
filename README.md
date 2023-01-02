@@ -66,4 +66,11 @@ quite simple operations to do.
 Not much to say, except that I am so glad to use `pytest`. It is really easy to debug with it. And it forces me to
 create interesting functions. I started using parametrization on it, just for fun.
 
-### Day 3:
+### Day 3: Binary Diagnostic
+
+You have a list of binary numbers, and you need to do a test along the columns of bits. The thing I had to get was the
+binary transformation which is easy in python:
+
+```python
+int(my_string, base)
+```
