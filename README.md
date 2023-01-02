@@ -43,8 +43,24 @@ maps of coordinates + to deal with graphs.
 
 ### Day 1: Sonar Sweep
 
+The goal of the day is:
+
+- first make a difference between consecutive numbers in a list.
+- then, calculate the sum of a sliding window in a list.
+
+And obviously, as it is the first day, you have to figure out how to read the text files that represent your each day
+input.
+
 The problem itself is easy. It's the first day. But it forced me to work with Pytest, which is cool. At the moment, I
 only use the basics of it. But still useful. For windowing, I first forgot the last value of my list, and the error
 given by pytest was so clear that I fixed it in few seconds.
 
 I think that I will keep the sliding window for the future. Even if it is not a complicated stuff to do again.
+
+### Day 2: Dive!
+
+The first problem needs to parse a little the data, to get a command, composed of a direction (a key-word) plus a value
+(a number that I need to transform from string to integer.) In tha AoC, in general, we work with integers.
+
+Not much to say, except that I am so glad to use `pytest`. It is really easy to debug with it. And it forces me to
+create interesting functions. I started using parametrization on it, just for fun.
