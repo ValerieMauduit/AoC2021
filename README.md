@@ -56,3 +56,11 @@ only use the basics of it. But still useful. For windowing, I first forgot the l
 given by pytest was so clear that I fixed it in few seconds.
 
 I think that I will keep the sliding window for the future. Even if it is not a complicated stuff to do again.
+
+### Day 2: Dive!
+
+The first problem needs to parse a little the data, to get a command, composed of a direction (a key-word) plus a value
+(a number that I need to transform from string to integer.) In tha AoC, in general, we work with integers.
+
+Not much to say, except that I am so glad to use `pytest`. It is really easy to debug with it. And it forces me to
+create interesting functions. I started using parametrization on it, just for fun.
