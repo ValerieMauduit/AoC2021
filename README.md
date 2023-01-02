@@ -43,6 +43,14 @@ maps of coordinates + to deal with graphs.
 
 ### Day 1: Sonar Sweep
 
+The goal of the day is:
+
+- first make a difference between consecutive numbers in a list.
+- then, calculate the sum of a sliding window in a list.
+
+And obviously, as it is the first day, you have to figure out how to read the text files that represent your each day
+input.
+
 The problem itself is easy. It's the first day. But it forced me to work with Pytest, which is cool. At the moment, I
 only use the basics of it. But still useful. For windowing, I first forgot the last value of my list, and the error
 given by pytest was so clear that I fixed it in few seconds.

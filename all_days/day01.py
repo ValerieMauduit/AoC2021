@@ -36,9 +36,9 @@ def run(data_dir, star):
     with open(f'{data_dir}/input-day01.txt', 'r') as fic:
         data = [int(x) for x in fic.read().split('\n')[:-1]]
 
-    if star == 1:  # The final answer is:
+    if star == 1:  # The final answer is: 1390
         solution = count_increases(data)
-    elif star == 2:  # The final answer is:
+    elif star == 2:  # The final answer is: 1457
         solution = count_increases(data, windows=True)
     else:
         raise Exception('Star number must be either 1 or 2.')
