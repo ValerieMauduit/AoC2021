@@ -42,3 +42,9 @@ useful functions, and try, in general, to really create interesting tools for th
 maps of coordinates + to deal with graphs.
 
 ### Day 1: Sonar Sweep
+
+The problem itself is easy. It's the first day. But it forced me to work with Pytest, which is cool. At the moment, I
+only use the basics of it. But still useful. For windowing, I first forgot the last value of my list, and the error
+given by pytest was so clear that I fixed it in few seconds.
+
+I think that I will keep the sliding window for the future. Even if it is not a complicated stuff to do again.

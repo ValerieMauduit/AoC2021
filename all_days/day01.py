@@ -8,14 +8,28 @@
 # To do this, count the number of times a depth measurement increases from the previous measurement. (There is no
 # measurement before the first measurement.) How many measurements are larger than the previous measurement?
 
-# Second star: description
+# Second star: Considering every single measurement isn't as useful as you expected: there's just too much noise in the
+# data. Instead, consider sums of a three-measurement sliding window. Your goal now is to count the number of times the
+# sum of measurements in this sliding window increases from the previous sum. Consider sums of a three-measurement
+# sliding window. How many sums are larger than the previous sum?
 
-def is_increasing(data):
-    return [data[n + 1] - data[n] > 0  for n in range(len(data) - 1)]
+def is_increasing(data, windows=False, span=None):
+    if windows:
+        if span is None:
+            windows = sliding_windows(data)
+        else:
+            windows = sliding_windows(data, span)
+    else:
+        windows = data
+    return [windows[n + 1] - windows[n] > 0  for n in range(len(windows) - 1)]
 
 
-def count_increases(data):
-    return sum(is_increasing(data))
+def count_increases(data, windows=False, span=None):
+    return sum(is_increasing(data, windows, span))
+
+
+def sliding_windows(data, size=3):
+    return [sum([data[n + p] for p in range(size)]) for n in range(len(data) - size + 1)]
 
 
 def run(data_dir, star):
@@ -25,7 +39,7 @@ def run(data_dir, star):
     if star == 1:  # The final answer is:
         solution = count_increases(data)
     elif star == 2:  # The final answer is:
-        solution = my_func(data)
+        solution = count_increases(data, windows=True)
     else:
         raise Exception('Star number must be either 1 or 2.')
 

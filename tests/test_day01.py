@@ -18,5 +18,13 @@ def test_is_decreasing(test_data):
     assert day01.is_increasing(test_data) == [True, True, True, False, True, True, True, False, True]
 
 
-def test_count_decrease(test_data):
+def test_count_increases(test_data):
     assert day01.count_increases(test_data) == 7
+
+
+def test_sliding_windows(test_data):
+    assert day01.sliding_windows(test_data) == [607, 618, 618, 617, 647, 716, 769, 792]
+
+
+def test_count_increases_with_windows(test_data):
+    assert day01.count_increases(test_data, True) == 5
