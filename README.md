@@ -109,3 +109,8 @@ map class:
 
 Once done, translating this problem in my map wasn't difficult. The most difficult was to parse the data in a way that
 allowed me to read the clouds lines.
+
+For the second part, I guessed that I would have to deal with the diagonals. I thought it would be straightforward, but
+it wasn't. My algorithm would have created square clouds with these diagonals coordinates. So I had to have a second
+case for these clouds. And as usual, I first tested with an algorithm that "forgot" the last point of each diagonal
+cloud.
