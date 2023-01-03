@@ -34,7 +34,7 @@ class AocMap:
 
     def display(self):
         for line in self.map:
-            print("".join(line))
+            print("".join([str(x) for x in line]))
 
     def get_position(self):
         return [self.x, self.y]
