@@ -133,3 +133,10 @@ directly for the second star.
 Lol, it is exactly a regression problem, with minimization of the absolute error. I did it without any DS library,
 because we don't need. It was easy except the fact that I first tested on my data of the day 6...
 
+For the second star, I immediatly remembered that the formula is `n * (n + 1) / 2`. But I didn't realize first that, as
+I needed to get an absolute value, I really needed to calculate `abs(n) + 1`, not `abs(n + 1)`. My second error then was
+that to get a minimum, I initialized with a number that I knew it was higher than the solution. OK for the first star...
+but for the second one, my initialization number was too low, before I fixed it.
+
+What I liked: assign a function to a variable, to use the same mechanism for the two stars, with a different fuel
+consumption formula.

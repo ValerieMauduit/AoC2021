@@ -16,6 +16,15 @@ def test_data():
 
 moves = [(2, 37), (1, 41), (3, 39), (10, 71)]
 
+
 @pytest.mark.parametrize("position, fuel", moves)
 def test_fuel_spent(test_data, position, fuel):
     assert day07.fuel_spent(test_data, position) == fuel
+
+
+fixed_moves = [(2, 206), (5, 168)]
+
+
+@pytest.mark.parametrize("position, fuel", fixed_moves)
+def test_fuel_spent_fixed(test_data, position, fuel):
+    assert day07.fuel_spent_fixed(test_data, position) == fuel

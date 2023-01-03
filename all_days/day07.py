@@ -21,10 +21,18 @@ def fuel_spent(data, position):
     return sum([abs(x - position) for x in data])
 
 
-def minimum_fuel(data):
-    fuel = len(data) * (max(data) - min(data))
+def fuel_spent_fixed(data, position):
+    return int(sum([abs(x - position) * (abs(x - position) + 1) / 2 for x in data if x != position]))
+
+
+def minimum_fuel(data, fixed=False):
+    if fixed:
+        calculate_fuel = fuel_spent_fixed
+    else:
+        calculate_fuel = fuel_spent
+    fuel = len(data) * (max(data) - min(data)) * (max(data) - min(data) + 1) / 2
     for position in range(min(data), max(data) + 1):
-        fuel = min([fuel_spent(data, position), fuel])
+        fuel = min([calculate_fuel(data, position), fuel])
     return fuel
 
 
@@ -33,8 +41,8 @@ def run(data_dir, star):
 
     if star == 1:  # The final answer is: 347509
         solution = minimum_fuel(data)
-    elif star == 2:  # The final answer is:
-        solution = my_func(data)
+    elif star == 2:  # The final answer is: 98257206
+        solution = minimum_fuel(data, True)
     else:
         raise Exception('Star number must be either 1 or 2.')
 
