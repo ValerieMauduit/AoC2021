@@ -2,7 +2,7 @@
 import argparse
 
 from all_days import (
-    day01, day02
+    day01, day02, day03
 )
 
 
@@ -17,6 +17,8 @@ def main():
         day01.run(args.dir, args.star)
     elif args.day == 2:
         day02.run(args.dir, args.star)
+    elif args.day == 3:
+        day03.run(args.dir, args.star)
     else:
         raise Exception(f"Day {args.day} isn't already coded")
 

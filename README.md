@@ -59,8 +59,21 @@ I think that I will keep the sliding window for the future. Even if it is not a 
 
 ### Day 2: Dive!
 
-The first problem needs to parse a little the data, to get a command, composed of a direction (a key-word) plus a value
-(a number that I need to transform from string to integer.) In tha AoC, in general, we work with integers.
+The two problems need to parse a little the data, to get a command, composed of a direction (a key-word) plus a value
+(a number that I need to transform from string to integer.) In tha AoC, in general, we work with integers. And then,
+quite simple operations to do.
 
 Not much to say, except that I am so glad to use `pytest`. It is really easy to debug with it. And it forces me to
 create interesting functions. I started using parametrization on it, just for fun.
+
+### Day 3: Binary Diagnostic
+
+You have a list of binary numbers, and you need to do a test along the columns of bits. The thing I had to get was the
+binary transformation which is easy in python:
+
+```python
+int(my_string, base)
+```
+
+For the second part, I had to separate the function that really defines the most common bit in a column. Once done, I
+only needed to be careful to end my while loop (as usual).
