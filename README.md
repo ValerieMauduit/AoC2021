@@ -127,3 +127,9 @@ I didn't use any of my specific tools, but I used a parametric test, and it was 
 
 Actually, as I used a map, the second star was totally straightforward. I **love** when my first implementation works
 directly for the second star.
+
+### Day 7: The Treachery of Whales
+
+Lol, it is exactly a regression problem, with minimization of the absolute error. I did it without any DS library,
+because we don't need. It was easy except the fact that I first tested on my data of the day 6...
+
