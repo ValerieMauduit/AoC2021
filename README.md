@@ -97,3 +97,15 @@ for line in data:
     print(''.join(line))
 print(' ')
 ```
+
+### Day 5: Hydrothermal Venture
+
+It is really time-consuming to do a good tooling for my AoC. But I think that my next AoC will deserve this time. Plus:
+it is nice, and I learn with it. This day is the first day of this AoC with a map. I had so many things to improve in my
+map class: 
+- deal with an origin which is not at [0, 0],
+- build an empty map, or a map to put some points based on coordinates,
+- get or set a specific point in a map (obviously, with an origin that may not be [0, 0])
+
+Once done, translating this problem in my map wasn't difficult. The most difficult was to parse the data in a way that
+allowed me to read the clouds lines.
