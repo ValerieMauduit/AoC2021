@@ -6,22 +6,25 @@ current_dir = os.path.dirname(os.path.realpath(__file__))
 parent_dir = os.path.dirname(current_dir)
 sys.path.append(parent_dir)
 
-from AoC_tools import work_with_lists, work_with_maps
+from AoC_tools import work_with_lists, work_with_maps, read_data
 
 
 @pytest.fixture
 def test_data():
     return [12, 42, 73, 1]
 
+@pytest.fixture
+def test_map():
+    return work_with_maps.AocMap(['....#.', '...##.', '#.....'], [5, 1])
+
+@pytest.fixture
+def test_line():
+    return "20-22, 21-87"
+
 
 def test_sliding_windows(test_data):
     assert work_with_lists.sliding_windows(test_data, 2) == [[12, 42], [42, 73], [73, 1]]
     assert work_with_lists.sliding_windows(test_data) == [[12, 42, 73], [42, 73, 1]]
-
-
-@pytest.fixture
-def test_map():
-    return work_with_maps.AocMap(['....#.', '...##.', '#.....'], [5, 1])
 
 
 def test_map_creation(test_map):
@@ -81,3 +84,30 @@ def test_map_neighbours(test_map):
     assert test_map.count_neighbours('.') == 7
     assert test_map.count_neighbours('#') == 1
 
+
+def test_read_data_without_split():
+    assert read_data.read_data('tests/input_test.txt', numbers=True, by_block=True) == [[12, 156], [1], [42, 42, 3]]
+    assert read_data.read_data('tests/input_test.txt', numbers=True, by_block=False) == [12, 156, 1, 42, 42, 3]
+    assert (read_data.read_data('tests/input_test.txt', numbers=False, by_block=False) ==
+            ['12', '156', '', '1', '', '42', '42', '3'])
+    assert (read_data.read_data('tests/input_test.txt', numbers=False, by_block=True) ==
+            [['12', '156'], ['1'], ['42', '42', '3']])
+
+
+def test_read_data_with_split():
+    assert (read_data.read_data('tests/input_test_for_splits.txt', numbers=True, split=' ') ==
+            [[12, 13, 14], [1, 2, 3], ['45-42'], [67]])
+    assert (read_data.read_data('tests/input_test_for_splits.txt', numbers=False, split=' ') ==
+            [['12', '13', '14'], ['1', '2', '3'], ['45-42'], ['67']])
+    assert (read_data.read_data('tests/input_test_for_splits.txt', numbers=True, split='-') ==
+            [['12 13 14'], ['1 2 3'], [45, 42], [67]])
+    assert (read_data.read_data('tests/input_test_for_splits.txt', numbers=False, split='-') ==
+            [['12 13 14'], ['1 2 3'], ['45', '42'], ['67']])
+    with pytest.raises(Exception) as exc_info:
+        read_data.read_data('tests/input_test_for_splits.txt', by_block=True, split='-')
+    assert len(exc_info.value.args[0]) > 0
+
+
+def test_smart_split(test_line):
+    assert read_data.smart_split(test_line, "-|, ") == ["20", "22", "21", "87"]
+    assert read_data.smart_split([test_line, test_line], "-|, ") == [["20", "22", "21", "87"], ["20", "22", "21", "87"]]
