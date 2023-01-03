@@ -77,3 +77,8 @@ int(my_string, base)
 
 For the second part, I had to separate the function that really defines the most common bit in a column. Once done, I
 only needed to be careful to end my while loop (as usual).
+
+### Day 4: Giant Squid
+
+The goal is to play bingo here. It was fun to build a `BingoCard` class and its methods, and easy to use. But I
+struggled with my too many levels of sub-lists in lists. Once done, it was OK for the first part.
