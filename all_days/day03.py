@@ -29,6 +29,14 @@
 #   numbers with that bit in that position. If 0 and 1 are equally common, keep values with a 0 in the position being
 #   considered.
 
+import os
+import sys
+current_dir = os.path.dirname(os.path.realpath(__file__))
+parent_dir = os.path.dirname(current_dir)
+sys.path.append(parent_dir)
+
+from AoC_tools.read_data import read_data
+
 import numpy as np
 
 
@@ -77,8 +85,7 @@ def get_score(rates):
 
 
 def run(data_dir, star):
-    with open(f'{data_dir}/input-day03.txt', 'r') as fic:
-        data = [x for x in fic.read().split('\n')[:-1]]
+    data = read_data(f'{data_dir}/input-day03.txt', numbers=False)
 
     if star == 1:  # The final answer is: 3429254
         solution = get_score(binary_power_consumption(data))
