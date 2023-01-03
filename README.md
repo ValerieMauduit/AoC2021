@@ -114,3 +114,16 @@ For the second part, I guessed that I would have to deal with the diagonals. I t
 it wasn't. My algorithm would have created square clouds with these diagonals coordinates. So I had to have a second
 case for these clouds. And as usual, I first tested with an algorithm that "forgot" the last point of each diagonal
 cloud.
+
+### Day 6: Lanternfish
+
+Here, we need to count some elements with a rule to change the data of the list at each step. The text shows it with a
+change for each element. But actually, I immediately realized that the elements were of 9 values, and it would be better
+to group them in a dict, saying how many of each type I have. It worked well (for the first star). My only problem was
+that I didn't realize immediately that there were two different way to get fishes of type 6, so I need to add the two
+results.
+
+I didn't use any of my specific tools, but I used a parametric test, and it was useful to understand my mistake.
+
+Actually, as I used a map, the second star was totally straightforward. I **love** when my first implementation works
+directly for the second star.
