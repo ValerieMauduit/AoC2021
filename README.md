@@ -77,3 +77,23 @@ int(my_string, base)
 
 For the second part, I had to separate the function that really defines the most common bit in a column. Once done, I
 only needed to be careful to end my while loop (as usual).
+
+### Day 4: Giant Squid
+
+The goal is to play bingo here. It was fun to build a `BingoCard` class and its methods, and easy to use. But I
+struggled with my too many levels of sub-lists in lists. Once done, it was OK for the first part.
+
+With the way I built my stuff, it was straightforward to play until everybody wins. I only had to take care of keeping
+the index of the loosing bingo card. I like to name my classes, variables and functions as in the AoC story. It is
+funnier to read and debug. And also more understandable.
+
+I always use the same kind of pretty print to debug. Why don't I add it in my tools? I need to figure out a way to
+provide something really useful for it.
+
+```python
+for line in data:
+    print(line)
+    # or
+    print(''.join(line))
+print(' ')
+```

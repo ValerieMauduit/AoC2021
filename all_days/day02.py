@@ -7,7 +7,24 @@
 # Calculate the horizontal position and depth you would have after following the planned course. What do you get if you
 # multiply your final horizontal position by your final depth?
 
-# Second star: description
+# Second star: In addition to horizontal position and depth, you'll also need to track a third value, aim, which also
+# starts at 0. The commands also mean something entirely different than you first thought:
+# - down X increases your aim by X units.
+# - up X decreases your aim by X units.
+# - forward X does two things:
+#   - It increases your horizontal position by X units.
+#   - It increases your depth by your aim multiplied by X.
+# Using this new interpretation of the commands, calculate the horizontal position and depth you would have after
+# following the planned course. What do you get if you multiply your final horizontal position by your final depth?
+
+import os
+import sys
+current_dir = os.path.dirname(os.path.realpath(__file__))
+parent_dir = os.path.dirname(current_dir)
+sys.path.append(parent_dir)
+
+from AoC_tools.read_data import read_data
+
 
 def get_position(data):
     position_dict = {'forward': 0, 'up': 0, 'down': 0}
@@ -36,8 +53,7 @@ def debugged_position(data):
 
 
 def run(data_dir, star):
-    with open(f'{data_dir}/input-day02.txt', 'r') as fic:
-        data = [x for x in fic.read().split('\n')[:-1]]
+    data = read_data(f'{data_dir}/input-day02.txt', numbers=False)
 
     if star == 1:  # The final answer is: 1762050
         solution = score(get_position(data))
