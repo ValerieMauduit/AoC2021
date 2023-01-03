@@ -9,7 +9,11 @@
 # Then, multiply that sum by the number that was just called when the board won. To guarantee victory against the giant
 # squid, figure out which board will win first. What will your final score be if you choose that board?
 
-# Second star: description
+# Second star: On the other hand, it might be wise to try a different strategy: let the giant squid win. You aren't sure
+# how many bingo boards a giant squid could play at once, so rather than waste time counting its arms, the safe thing to
+# do is to figure out which board will win last and choose that one. That way, no matter which boards it picks, it will
+# win for sure.
+# Figure out which board will win last. Once it wins, what would its final score be?
 
 import os
 import sys
@@ -65,6 +69,17 @@ def play_bingo(cards, numbers):
     return cards[winner].unmarked_sum() * numbers[0]
 
 
+def loose_bingo(cards, numbers):
+    cards = [BingoCard(values) for values in cards]
+    numbers = [0] + numbers
+    while min([card.win == True for card in cards]) == 0:
+        looser = [card.win for card in cards].index(False)
+        numbers = numbers[1:]
+        for card in cards:
+            card.draw_value(numbers[0])
+    return cards[looser].unmarked_sum() * numbers[0]
+
+
 def run(data_dir, star):
     data = read_data(f'{data_dir}/input-day04.txt', by_block=True, numbers=False)
     draw_numbers = [int(x) for x in data[0][0].split(',')]
@@ -72,8 +87,8 @@ def run(data_dir, star):
 
     if star == 1:  # The final answer is: 41503
         solution = play_bingo(cards, draw_numbers)
-    elif star == 2:  # The final answer is:
-        solution = my_func(data)
+    elif star == 2:  # The final answer is: 3178
+        solution = loose_bingo(cards, draw_numbers)
     else:
         raise Exception('Star number must be either 1 or 2.')
 

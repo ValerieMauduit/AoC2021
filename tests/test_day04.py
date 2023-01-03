@@ -63,3 +63,7 @@ def test_bingo_card_wins(test_data):
 
 def test_play_bingo(test_data):
     assert day04.play_bingo(test_data[1], test_data[0]) == 4512
+
+
+def test_loose_bingo(test_data):
+    assert day04.loose_bingo(test_data[1], test_data[0]) == 1924
