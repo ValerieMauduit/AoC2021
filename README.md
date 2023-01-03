@@ -74,3 +74,6 @@ binary transformation which is easy in python:
 ```python
 int(my_string, base)
 ```
+
+For the second part, I had to separate the function that really defines the most common bit in a column. Once done, I
+only needed to be careful to end my while loop (as usual).

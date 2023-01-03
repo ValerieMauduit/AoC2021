@@ -11,17 +11,53 @@
 # Use the binary numbers in your diagnostic report to calculate the gamma rate and epsilon rate, then multiply them
 # together. What is the power consumption of the submarine? (Be sure to represent your answer in decimal, not binary.)
 
-# Second star: description
+# Second star: Next, you should verify the life support rating, which can be determined by multiplying the oxygen
+# generator rating by the CO2 scrubber rating. Both the oxygen generator rating and the CO2 scrubber rating are values
+# that can be found in your diagnostic report - finding them is the tricky part. Both values are located using a similar
+# process that involves filtering out values until only one remains. Before searching for either rating value, start
+# with the full list of binary numbers from your diagnostic report and consider just the first bit of those numbers.
+# Then:
+# - Keep only numbers selected by the bit criteria for the type of rating value for which you are searching. Discard
+#   numbers which do not match the bit criteria.
+# - If you only have one number left, stop; this is the rating value for which you are searching.
+# - Otherwise, repeat the process, considering the next bit to the right.
+# The bit criteria depends on which type of rating value you want to find:
+# - To find oxygen generator rating, determine the most common value (0 or 1) in the current bit position, and keep only
+#   numbers with that bit in that position. If 0 and 1 are equally common, keep values with a 1 in the position being
+#   considered.
+# - To find CO2 scrubber rating, determine the least common value (0 or 1) in the current bit position, and keep only
+#   numbers with that bit in that position. If 0 and 1 are equally common, keep values with a 0 in the position being
+#   considered.
 
 import numpy as np
 
 
-def gamma_epsilon(data, column):
+def most_common_bit(data, column):
     values = [int(line[column]) for line in data]
-    if np.mean(values) < 0.5:
-        return {'gamma': '0', 'epsilon': '1'}
-    else:
-        return {'gamma': '1', 'epsilon': '0'}
+    return 1 - int(np.round(1 - np.mean(values)))
+
+
+def gamma_epsilon(data, column):
+    most_common = most_common_bit(data, column)
+    return {'gamma': str(most_common), 'epsilon': str(1 - most_common)}
+
+
+def binary_oxygen_rate(data):
+    column = 0
+    while len(data) > 1:
+        bit = most_common_bit(data, column)
+        data = [line for line in data if int(line[column]) == bit]
+        column += 1
+    return data[0]
+
+
+def binary_co2_rate(data):
+    column = 0
+    while len(data) > 1:
+        bit = 1 - most_common_bit(data, column)
+        data = [line for line in data if int(line[column]) == bit]
+        column += 1
+    return data[0]
 
 
 def binary_power_consumption(data):
@@ -33,9 +69,11 @@ def binary_power_consumption(data):
     return rates
 
 
-def score(data):
-    rates = binary_power_consumption(data)
-    return int(rates['gamma'], 2) * int(rates['epsilon'], 2)
+def get_score(rates):
+    score = 1
+    for key in rates:
+        score *= int(rates[key], 2)
+    return score
 
 
 def run(data_dir, star):
@@ -43,9 +81,9 @@ def run(data_dir, star):
         data = [x for x in fic.read().split('\n')[:-1]]
 
     if star == 1:  # The final answer is: 3429254
-        solution = score(data)
-    elif star == 2:  # The final answer is:
-        solution = my_func(data)
+        solution = get_score(binary_power_consumption(data))
+    elif star == 2:  # The final answer is: 5410338
+        solution = get_score({'oxygen': binary_oxygen_rate(data), 'co2': binary_co2_rate(data)})
     else:
         raise Exception('Star number must be either 1 or 2.')
 

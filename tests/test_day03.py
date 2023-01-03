@@ -23,5 +23,17 @@ def test_binary_power_consumption(test_data):
     assert day03.binary_power_consumption(test_data) == {'gamma': '10110', 'epsilon': '01001'}
 
 
-def test_score(test_data):
-    assert day03.score(test_data) == 198
+rates = [({'gamma': '10110', 'epsilon': '01001'}, 198), ({'oxygen': '10111', 'co2': '01010'}, 230)]
+
+
+@pytest.mark.parametrize("binary_values, score", rates)
+def test_score(binary_values, score):
+    assert day03.get_score(binary_values) == score
+
+
+def test_oxygen_rate(test_data):
+    assert day03.binary_oxygen_rate(test_data) == '10111'
+
+
+def test_co2_rate(test_data):
+    assert day03.binary_co2_rate(test_data) == '01010'
