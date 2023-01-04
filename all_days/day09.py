@@ -8,7 +8,12 @@
 # three or two adjacent locations, respectively. The risk level of a low point is 1 plus its height. Find all of the low
 # points on your heightmap. What is the sum of the risk levels of all low points on your heightmap?
 
-# Second star: description
+# Second star: Next, you need to find the largest basins so you know what areas are most important to avoid. A basin is
+# all locations that eventually flow downward to a single low point. Therefore, every low point has a basin, although
+# some basins are very small. Locations of height 9 do not count as being in any basin, and all other locations will
+# always be part of exactly one basin. The size of a basin is the number of locations within the basin, including the
+# low point.
+# What do you get if you multiply together the sizes of the three largest basins?
 
 import os
 import sys
@@ -26,22 +31,50 @@ def risk_level(points):
 
 def get_low_points(data):
     heightmap = AocMap(data, numbers=True)
-    low_points = []
+    low_points = {'coordinates': [], 'values': []}
     for y in range(heightmap.height):
         for x in range(heightmap.width):
             heightmap.set_position([x, y])
             if heightmap.get_point([x, y]) < min(heightmap.get_neighbours(False)):
-                low_points += [heightmap.get_point([x, y])]
+                low_points['values'] += [heightmap.get_point([x, y])]
+                low_points['coordinates'] += [[x, y]]
     return low_points
+
+
+def get_basins_sizes(data):
+    heightmap = AocMap(data, numbers=True)
+    basins_map = AocMap.empty_from_size(heightmap.width, heightmap.height)
+    low_points = get_low_points(data)
+    count_low_points = len(low_points['coordinates'])
+    basins_map.set_points(low_points['coordinates'], [x for x in range(count_low_points)])
+    while basins_map.count_marker('.') > 0:
+        for y in range(heightmap.height):
+            for x in range(heightmap.width):
+                if basins_map.get_point([x, y]) == '.':
+                    if heightmap.get_point([x, y]) == 9:
+                        basins_map.set_point([x, y], '#')
+                    else:
+                        basins_map.set_position([x, y])
+                        numbered_neighbours = [x for x in basins_map.get_neighbours(False) if x not in ['.', '#']]
+                        if len(numbered_neighbours) > 0:
+                            basins_map.set_point([x, y], numbered_neighbours[0])
+    basins_sizes = [basins_map.count_marker(x) for x in range(count_low_points)]
+    return basins_sizes
+
+
+def score(basins_sizes):
+    basins_sizes.sort()
+    basins_sizes.reverse()
+    return basins_sizes[0] * basins_sizes[1] * basins_sizes[2]
 
 
 def run(data_dir, star):
     data = read_data(f'{data_dir}/input-day09.txt', numbers=False)
 
     if star == 1:  # The final answer is: 436
-        solution = risk_level(get_low_points(data))
-    elif star == 2:  # The final answer is:
-        solution = my_func(data)
+        solution = risk_level(get_low_points(data)['values'])
+    elif star == 2:  # The final answer is: 1317792
+        solution = score(get_basins_sizes(data))
     else:
         raise Exception('Star number must be either 1 or 2.')
 

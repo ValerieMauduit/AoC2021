@@ -15,7 +15,7 @@ def test_data():
 
 
 def test_low_points(test_data):
-    low_points = day09.get_low_points(test_data)
+    low_points = day09.get_low_points(test_data)['values']
     low_points.sort()
     assert len(low_points) == 4
     assert low_points == [0, 1, 5, 5]
@@ -23,3 +23,9 @@ def test_low_points(test_data):
 
 def test_risk_level():
     assert day09.risk_level([0, 1, 5, 5]) == 15
+
+
+def test_basins_sizes(test_data):
+    basins_sizes = day09.get_basins_sizes(test_data)
+    basins_sizes.sort()
+    assert basins_sizes == [3, 9, 9, 14]
