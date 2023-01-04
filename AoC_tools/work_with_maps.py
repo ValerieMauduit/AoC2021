@@ -113,6 +113,27 @@ class AocMap:
                 if y != self.y
             ]
 
+    def get_neighbours_coordinates(self, diagonals=True):
+        # Method to get the coordinates for all the neighbours of the position.
+        # Optional: diagonals can be set to False not to get them in the neighbourhood.
+        if diagonals:
+            return [
+                [x, y]
+                for x in range(max([self.origin[0], self.x - 1]), min([self.x + 2, self.width + self.origin[0]]))
+                for y in range(max([self.origin[1], self.y - 1]), min([self.y + 2, self.height + self.origin[1]]))
+                if [x, y] != [self.x, self.y]
+            ]
+        else:
+            return [
+                [x, self.y]
+                for x in range(max([self.origin[0], self.x - 1]), min([self.x + 2, self.width + self.origin[0]]))
+                if x != self.x
+            ] + [
+                [self.x, y]
+                for y in range(max([self.origin[1], self.y - 1]), min([self.y + 2, self.height + self.origin[1]]))
+                if y != self.y
+            ]
+
     def count_neighbours(self, marker, diagonals=True):
         # Method to count a specific value of marker in the neighbourhood of the position.
         # Optional: diagonals can be set to False not to get them in the neighbourhood.
@@ -121,3 +142,11 @@ class AocMap:
     def count_marker(self, marker):
         # Method to count how many times a specific marker is present in the total map
         return sum([sum([x == marker for x in line]) for line in self.map])
+
+    def change_marker(self, previous_marker, new_marker):
+        # Method to update the map to change all the occurrences of a given marker to a new value
+        self.map = [[new_marker if point == previous_marker else point for point in line] for line in self.map]
+
+    def apply_function(self, function):
+        # Method to update all the values of the points of the map using a given function
+        self.map = [[function(point) for point in line] for line in self.map]
