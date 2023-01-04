@@ -153,3 +153,17 @@ For the second star, it was funny to figure out what are the conditions for a co
 think "What is the direction to take?" Finally, I had to first count the number of letters of the code (star 1) then
 figure out if a letter appear a certain amount of time on the left side. I think that it would have been possible (but
 more difficult) even if on the side, we wouldn't have got all the ten digits each time.
+
+### Day 9: Smoke Basin
+
+Here, we have a kind of heatmap, with numerical values on all the coordinates. How to find values that are lower than
+their neighbours?
+
+I improved a bit my `AocMap` class, to be able to deal with numbers in it. It was so cool to use it! I definitively
+need it for next year.
+
+For the second part, I had to improve the `AocMap` once again. Cross fingers that it will be helpful in the future. Once
+done, I can fully concentrate on solving the problem, which is really fun. My idea now is : **never navigate** in a map,
+always update it (or a parallel map) with the possible values and summarize it in the end. Here, I put a number to each
+low point and a wall to each 9. Then from neighbour to neighbour, I expand the basins numbers. Finally, I count the
+instances of each basin value to determine which are the largest ones.
