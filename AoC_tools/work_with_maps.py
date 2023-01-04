@@ -10,7 +10,7 @@ class AocMap:
         if numbers:
             self.map = [[int(x) for x in line] for line in data]
         else:
-            self.map = [[int(x) for x in line] for line in data]
+            self.map = [[x for x in line] for line in data]
         if origin is None:
             self.origin = [0, 0]
         else:
