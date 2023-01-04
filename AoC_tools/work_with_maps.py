@@ -81,9 +81,16 @@ class AocMap:
         # Method to change the map on a specific set of coordinates [x, y]
         self.map[position[1] - self.origin[1]][position[0] - self.origin[0]] = marker
 
-    def set_points(self, coordinates, marker='#'):
-        for coord in coordinates:
-            self.set_point(coord, marker)
+    def set_points(self, coordinates, markers='#'):
+        # Method to change the map with the same marker (by default '#') on a list of coordinates.
+        # If the marker option is set to a list: change the map to the values of the markers list, given in the same
+        # order as the coordinates.
+        if type(markers) == str:
+            for coord in coordinates:
+                self.set_point(coord, markers)
+        else:
+            for n in range(len(coordinates)):
+                self.set_point(coordinates[n], markers[n])
 
     def get_neighbours(self, diagonals=True):
         # Method to get the values of the map for all the neighbours of the position.
