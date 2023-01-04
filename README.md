@@ -179,3 +179,5 @@ more difficult exercise, I think.
 Once again I need some improvements to my `AocMap` class. Then, my most important question was: were to put the flash
 count? Because in the beginning I wanted to increase it whenever a neighbour of the octopus is impacted by the flash,
 which was false.
+
+For the second part, I copied-pasted the same code with only a small change in the stop condition. Not very clean :(

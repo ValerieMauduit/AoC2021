@@ -31,3 +31,7 @@ def test_10steps(test_data):
 
 def test_100steps(test_data):
     assert day11.run_steps(test_data, 100)['flashes'] == 1656
+
+
+def test_synchronisation(test_data):
+    assert day11.run_until_synchronization(test_data) == 195

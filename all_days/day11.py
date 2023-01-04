@@ -14,7 +14,8 @@
 # Given the starting energy levels of the dumbo octopuses in your cavern, simulate 100 steps. How many total flashes are
 # there after 100 steps?
 
-# Second star: description
+# Second star: If you can calculate the exact moments when the octopuses will all flash simultaneously, you should be
+# able to navigate through the cavern. What is the first step during which all octopuses flash?
 
 import os
 import sys
@@ -51,13 +52,42 @@ def run_steps(data, steps=100):
     return {'map': octopus_map.map, 'flashes': flashes}
 
 
+def run_until_synchronization(data):
+    octopus_map = AocMap(data, numbers=True)
+    steps = 0
+    flashes = 0
+    while flashes < octopus_map.height * octopus_map.width:
+        steps += 1
+        # All octopuses increase by 1
+        octopus_map.apply_function(lambda x: x + 1)
+        # Octopuses flash
+        changes = True
+        while changes is True:
+            changes = False
+            for y in range(octopus_map.height):
+                for x in range(octopus_map.width):
+                    if octopus_map.get_point([x, y]) > 9:
+                        octopus_map.set_position([x, y])
+                        flashes += 1
+                        changes = True
+                        for neighbour in octopus_map.get_neighbours_coordinates():
+                            if octopus_map.get_point(neighbour) > 0:
+                                octopus_map.set_point(neighbour, octopus_map.get_point(neighbour) + 1)
+                        octopus_map.set_point([x, y], -1)
+        # After flashes, they all go back to 0
+        octopus_map.change_marker(-1, 0)
+        # Count flashes at this step
+        flashes = octopus_map.count_marker(0)
+    return steps
+
+
 def run(data_dir, star):
     data = read_data(f'{data_dir}/input-day11.txt', numbers=False)
 
     if star == 1:  # The final answer is: 1694
         solution = run_steps(data)
-    elif star == 2:  # The final answer is:
-        solution = my_func(data)
+    elif star == 2:  # The final answer is: 346
+        solution = run_until_synchronization(data)
     else:
         raise Exception('Star number must be either 1 or 2.')
 
