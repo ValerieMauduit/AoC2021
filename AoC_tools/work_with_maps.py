@@ -117,3 +117,7 @@ class AocMap:
         # Method to count a specific value of marker in the neighbourhood of the position.
         # Optional: diagonals can be set to False not to get them in the neighbourhood.
         return sum([n == marker for n in self.get_neighbours(diagonals)])
+
+    def count_marker(self, marker):
+        # Method to count how many times a specific marker is present in the total map
+        return sum([sum([x == marker for x in line]) for line in self.map])
