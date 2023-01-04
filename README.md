@@ -140,3 +140,16 @@ but for the second one, my initialization number was too low, before I fixed it.
 
 What I liked: assign a function to a variable, to use the same mechanism for the two stars, with a different fuel
 consumption formula.
+
+### Day 8: Seven Segment Search
+
+_I realize that if I want to be fast, I should create all my days files + the main program with all the days before
+starting December._
+
+It is about some patterns that must allow finding out which letter corresponds to which object. The first star is easy,
+but we might think that the second one will be to really get the patterns and use them to decode some numbers.
+
+For the second star, it was funny to figure out what are the conditions for a code to be such or such digit. You have to
+think "What is the direction to take?" Finally, I had to first count the number of letters of the code (star 1) then
+figure out if a letter appear a certain amount of time on the left side. I think that it would have been possible (but
+more difficult) even if on the side, we wouldn't have got all the ten digits each time.
