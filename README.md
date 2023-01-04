@@ -171,4 +171,5 @@ instances of each basin value to determine which are the largest ones.
 ### Day 10: Syntax Scoring
 
 First recursion of the season, with a problem of checking if parenthesis close or not. It is really a typical exercise
-for a coding interview. Working on AoC improves a lot my skills in recursion.
+for a coding interview. Working on AoC improves a lot my skills in recursion. The second part is only a variation, not a
+more difficult exercise, I think.
