@@ -181,3 +181,17 @@ count? Because in the beginning I wanted to increase it whenever a neighbour of 
 which was false.
 
 For the second part, I copied-pasted the same code with only a small change in the stop condition. Not very clean :(
+
+### Day 12: Passage Pathing
+
+OK, first graph. Fight your fears. I created a small AocGraph class. I am not sure yet that it will be useful for the
+future. I also created a function to navigate in a graph. It isn't configurable but I think that it can help me to be
+able to copy-paste and then modify it. Let's see.
+
+Second star: I **really** need to go back on it and fix! It is so ugly. I don't understand why at the moment, but I
+authorize going twice in any small cave. And then, I post-process the result to count only the travels when I go twice
+in at most one small cave.
+
+```python
+# TODO: warning, ugly code
+```
