@@ -33,3 +33,8 @@ caves = [
 @pytest.mark.parametrize("paths, count", caves)
 def test_count_paths(paths, count):
     assert day12.count_paths(AocGraph(paths)) == count
+
+
+def test_count_paths_visit_twice():
+    test_data = [['start', 'A'], ['start', 'b'], ['A', 'c'], ['A', 'b'], ['b', 'd'], ['A', 'end'], ['b', 'end']]
+    assert day12.count_paths_visit_twice(AocGraph(test_data)) == 36
