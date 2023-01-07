@@ -1,3 +1,5 @@
+# TODO: faire tous les tests associés
+
 class AocMap:
     def __init__(self, data, position=None, origin=None, numbers=False):
         # Instantiation - Create a map from a data input of type "AoC input file data"
@@ -45,6 +47,12 @@ class AocMap:
         map_from_coord.origin = [x_min, y_min]
         map_from_coord.set_points(coordinates)
         return map_from_coord
+
+    def __copy__(self):
+        cls = self.__class__
+        result = cls.__new__(cls)
+        result.__dict__.update(self.__dict__)
+        return result
 
     def display(self):
         # Method to display the map in the terminal
@@ -150,3 +158,90 @@ class AocMap:
     def apply_function(self, function):
         # Method to update all the values of the points of the map using a given function
         self.map = [[function(point) for point in line] for line in self.map]
+
+    def remove_lines(self, count, top=True):
+        if count >= self.height:
+            self.map = [[]]
+            self.height, self.width = 0, 0
+            self.x, self.y = self.origin[0], self.origin[1]
+        elif top:
+            self.map = self.map[count:]
+            self.height -= count
+            self.origin = [self.origin[0], self.origin[1] + count]
+        else:
+            self.map = self.map[:(-count)]
+            self.height -= count
+
+    def remove_columns(self, count, left=True):
+        if count >= self.width:
+            self.map = [[]]
+            self.height, self.width = 0, 0
+            self.x, self.y = self.origin[0], self.origin[1]
+        elif left:
+            self.map = [line[count:] for line in self.map]
+            self.width -= count
+            self.origin = [self.origin[0] + count, self.origin[1]]
+        else:
+            self.map = [line[:(-count)] for line in self.map]
+            self.width -= count
+
+    def add_empty_lines(self, count, top=True):
+        if count > 0:
+            if top:
+                self.map = [['.' for n in range(self.width)] for p in range(count)] + self.map
+                self.height += count
+                self.origin = [self.origin[0], self.origin[1] - count]
+            else:
+                self.map = self.map + [['.' for n in range(self.width)] for p in range(count)]
+                self.height += count
+
+    def add_empty_columns(self, count, left=True):
+        if count > 0:
+            if left:
+                self.map = [['.' for n in range(count)] + line for line in self.map]
+                self.width += count
+                self.origin = [self.origin[0] - count, self.origin[1]]
+            else:
+                self.map = [line + ['.' for n in range(count)] for line in self.map]
+                self.width += count
+
+    def create_submap(self, x_min, x_max, y_min, y_max):
+        # Method to create a new AocMap instance, which represents a part of the given AocMap
+        result = self.__copy__()
+        remove_left = x_min - self.origin[0]
+        if remove_left > 0:
+            result.remove_columns(remove_left)
+        remove_right = self.origin[0] + self.width - x_max
+        if remove_right > 0:
+            result.remove_columns(remove_right, left=False)
+        remove_top = y_min - self.origin[1]
+        if remove_top > 0:
+            result.remove_lines(remove_top)
+        remove_bottom = self.origin[1] + self.height - y_max
+        if remove_bottom > 0:
+            result.remove_lines(remove_bottom, top=False)
+        return result
+
+    def reverse(self, vertical=True, horizontal=False):
+        # Method to reverse a map. By default, we turn over the first column and/or the first line of the map. The
+        # origin is updated in consequence.
+        if vertical:
+            for line in self.map:
+                line.reverse()
+            self.origin = [self.origin[0] - self.width + 1, self.origin[1]]
+            self.x = self.x - self.width + 1
+        if horizontal:
+            self.map.reverse()
+            self.origin = [self.origin[0], self.origin[1] - self.height + 1]
+
+    # def superpose(self, other_map, match_corner='top-left', priority='#.'):
+    #     if match_corner == 'top-left':
+    #         # TODO
+    #     elif match_corner == 'bottom-left':
+    #         # TODO
+    #     elif match_corner == 'top-right':
+    #         # TODO
+    #     elif match_corner == 'bottom_right':
+    #         # TODO
+    #     else:
+    #         raise Exception('The matching corner must be one of: top-left, bottom-left, top-right, or bottom_right')
