@@ -210,10 +210,42 @@ def test_add_empty_columns(mocked_map):
     ]
 
 
-submaps = [([1, 1, 1, 1], [['.']]), ([1, 3, 0, 1], [['.', '.', '.'], ['.', '.', '#']]), ([4, 8, 2, 5], [['.', '.']])]
+submaps = [
+    ([1, 1, 1, 1], [['.']]),
+    ([1, 3, 0, 1], [['.', '.', '.'], ['.', '.', '#']]),
+    ([4, 8, 2, 5], [['.', '.']])
+]
 
 
 @pytest.mark.parametrize("limits, new_map", submaps)
 def test_create_submap(mocked_map, limits, new_map):
     submap = mocked_map.create_submap(limits[0], limits[1], limits[2], limits[3])
     assert submap.map == new_map
+
+
+reversed_maps = [(
+        False, False,
+        [['.', '.', '.', '.', '#', '.'], ['.', '.', '.', '#', '#', '.'], ['#', '.', '.', '.', '.', '.']],
+        [1, 1], [5, 1]
+    ), (
+        False, True,
+        [['#', '.', '.', '.', '.', '.'], ['.', '.', '.', '#', '#', '.'], ['.', '.', '.', '.', '#', '.']],
+        [1, -1], [5, 1]
+    ), (
+        True, False,
+        [['.', '#', '.', '.', '.', '.'], ['.', '#', '#', '.', '.', '.'], ['.', '.', '.', '.', '.', '#']],
+        [-4, 1], [-3, 1]
+    ), (
+        True, True,
+        [['.', '.', '.', '.', '.', '#'], ['.', '#', '#', '.', '.', '.'], ['.', '#', '.', '.', '.', '.']],
+        [-4, -1], [-3, 1]
+    )]
+
+
+@pytest.mark.parametrize("vertical, horizontal, result_map, origin, coord", reversed_maps)
+def test_reverse(mocked_map, vertical, horizontal, result_map, origin, coord):
+    mocked_map.origin = [1, 1]
+    mocked_map.reverse(vertical, horizontal)
+    assert mocked_map.map == result_map
+    assert mocked_map.origin == origin
+    assert [mocked_map.x, mocked_map.y] == coord

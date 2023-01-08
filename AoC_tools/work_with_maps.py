@@ -1,5 +1,3 @@
-# TODO: faire tous les tests associés
-
 class AocMap:
     def __init__(self, data, position=None, origin=None, numbers=False):
         # Instantiation - Create a map from a data input of type "AoC input file data"
@@ -211,13 +209,13 @@ class AocMap:
         remove_left = x_min - self.origin[0]
         if remove_left > 0:
             result.remove_columns(remove_left)
-        remove_right = self.origin[0] + self.width - x_max
+        remove_right = self.origin[0] + self.width - x_max - 1
         if remove_right > 0:
             result.remove_columns(remove_right, left=False)
         remove_top = y_min - self.origin[1]
         if remove_top > 0:
             result.remove_lines(remove_top)
-        remove_bottom = self.origin[1] + self.height - y_max
+        remove_bottom = self.origin[1] + self.height - y_max - 1
         if remove_bottom > 0:
             result.remove_lines(remove_bottom, top=False)
         return result
@@ -229,10 +227,11 @@ class AocMap:
             for line in self.map:
                 line.reverse()
             self.origin = [self.origin[0] - self.width + 1, self.origin[1]]
-            self.x = self.x - self.width + 1
+            self.x = self.width - self.x + self.origin[0]
         if horizontal:
             self.map.reverse()
             self.origin = [self.origin[0], self.origin[1] - self.height + 1]
+            self.y = self.height - self.y + self.origin[1]
 
     # def superpose(self, other_map, match_corner='top-left', priority='#.'):
     #     if match_corner == 'top-left':
