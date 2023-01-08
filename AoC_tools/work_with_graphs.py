@@ -48,18 +48,44 @@ class AocGraph:
         return distances[node2]
 
 
-def count_paths(caves, from_node, to_node, no_loop=True, forbidden=None):
+def count_paths(graph, from_node, to_node, no_loop=True, forbidden=None):
+    # This one is recursive
     if forbidden is None:
         forbidden = []
     if from_node == to_node:
         return 1
     else:
         total = 0
-        for neighbour in caves.get_neighbours(from_node, True):
+        for neighbour in graph.get_neighbours(from_node, True):
             if neighbour not in forbidden:
                 if no_loop:
                     branch_forbidden = forbidden + [from_node]
                 else:
                     branch_forbidden = forbidden
-                total += count_paths(caves, neighbour, to_node, no_loop, branch_forbidden)
+                total += count_paths(graph, neighbour, to_node, no_loop, branch_forbidden)
         return total
+
+
+def next_paths(path, graph):
+    paths = []
+    for neighbour in graph.get_neighbours(path['path'][-1]):
+        if neighbour not in path['forbidden']:
+            paths += [{'path': path['path'] + [neighbour], 'forbidden': path['forbidden']}]
+    return paths
+
+
+def all_paths(graph, from_node, to_node, forbid_function=None):
+    # This one is deep search first (favourite)
+    in_progress = [{'path': [from_node], 'forbidden': []}]
+    paths = []
+    while len(in_progress) > 0:
+        if in_progress[0]['path'][-1] == to_node:
+            paths += in_progress[0]['path']
+            in_progress = in_progress[1:]
+        else:
+            forbidden = in_progress[0]['forbidden']
+            if forbid_function(from_node):
+                # If the forbid_function is too complicated: copy/paste all the code and do it inside
+                forbidden += [from_node]
+            in_progress = next_paths({'path': in_progress[0]['path'], 'forbidden': forbidden}, graph) + in_progress[1:]
+    return paths
