@@ -176,6 +176,9 @@ more difficult exercise, I think.
 
 ### Day 11: Dumbo Octopus
 
+Here, we work again with a map. It is a map of numbers and the process to change the numbers is a chained reaction. So
+be careful to do it correctly.
+
 Once again I need some improvements to my `AocMap` class. Then, my most important question was: were to put the flash
 count? Because in the beginning I wanted to increase it whenever a neighbour of the octopus is impacted by the flash,
 which was false.
@@ -184,8 +187,10 @@ For the second part, I copied-pasted the same code with only a small change in t
 
 ### Day 12: Passage Pathing
 
+The idea here is to count the number of paths in a graph, with a simple rule first, and then a more complicated one.
+
 OK, first graph. Fight your fears. I created a small AocGraph class. I am not sure yet that it will be useful for the
-future. I also created a function to navigate in a graph. It isn't configurable but I think that it can help me to be
+future. I also created a function to navigate in a graph. It isn't configurable, but I think that it can help me to be
 able to copy-paste and then modify it. Let's see.
 
 Second star: I **really** need to go back on it and fix! It is so ugly. I don't understand why at the moment, but I
@@ -195,6 +200,9 @@ in at most one small cave.
 Finally, I fixed it, by using the now famous deeper first. So nice and more understandable (at least for me).
 
 ### Day 13: Transparent Origami
+
+It is a funny map: you have the coordinates of black dots of a map, and you fold it many times. At the end, you can read
+a message on the folded map.
 
 OK, as usual: first create interesting methods for mt `AocMap`: extract a submap, reverse a map, superpose two maps.
 Once did, the code is so simple! It is *not* a solution during the month of December, because it is longer at the
@@ -210,3 +218,28 @@ During the second star, I realized that:
 
 Finally, I removed the last column or the last line after getting the submaps. Not perfect in my opinion, but not the
 worse to do.
+
+### Day 14: Extended Polymerization
+
+Once again a typical AoC problem: you have a list (or a string) and a process that increases it a lot. You do some steps
+and then post-process the result to get a score.
+
+I added some list facilities, and I think that they are pretty cool. But I have an error in the number of steps, and I
+don't really get it: I need 10 steps in the test of the day, but 11 to get the right answer in the real problem. Let's
+let as it for the moment.
+
+The second star is not surprising: more steps. But even on the test example, it doesn't run immediately. So I need to
+find another way to do it, and I guess that as always, I would need to use a dict.
+
+I fixed it for a dict. To get the dict of the polymer step n was OK. But to calculate the score was more complicated. I
+first calculated the occurrences of the pairs, which is not what we want. The occurrences of each element in the
+pairs. But it is almost the double of the values I need. *Almost* is the problem: I count twice each element, except the
+first and the last one. When I realized it, I added the first and the last element of the polymer template, before
+dividing the score by two! Yes, because the first and the last element never change during the polymerization. OK, I
+obtained a result. And guess what? My first star value was too high... because now, I need to use the real number of
+steps. I fixed a bug, but I don't know how. It is like the story of the engineers comings from a good, a medium and a
+bad university (adaptable for each country, in France we tell it with Polytechnique, Centrale and the one the teller is
+from):
+- The engineer from Centrale designs a bridge. The bridge collapses and she doesn't know why.
+- The engineer from Polytechnique designs a bridge.  The bridge collapses and she does know why.
+- The engineer from the other school (me!) designs a bridge. The bridge doesn't collapse but she doesn't know why.
