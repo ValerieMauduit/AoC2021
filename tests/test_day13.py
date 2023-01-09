@@ -21,4 +21,14 @@ def test_data():
 
 
 def test_count_visible_dots_one_fold(test_data):
-    assert day13.count_visible_dots(test_data[0], [test_data[1][0]]) == 17
+    folded_map = day13.fold_map(test_data[0], [test_data[1][0]])
+    assert folded_map.count_marker('#') == 17
+
+
+def test_fold_map(test_data):
+    folded_map = day13.fold_map(test_data[0], test_data[1])
+    folded_map.display()
+    assert folded_map.map == [
+        ['#', '#', '#', '#', '#'], ['#', '.', '.', '.', '#'], ['#', '.', '.', '.', '#'], ['#', '.', '.', '.', '#'],
+        ['#', '#', '#', '#', '#'], ['.', '.', '.', '.', '.'], ['.', '.', '.', '.', '.']
+    ]

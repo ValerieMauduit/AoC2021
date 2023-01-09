@@ -8,7 +8,8 @@
 # (for horizontal y=... lines) or left (for vertical x=... lines). How many dots are visible after completing just the
 # first fold instruction on your transparent paper?
 
-# Second star: description
+# Second star: Finish folding the transparent paper according to the instructions. The manual says the code is always
+# eight capital letters. What code do you use to activate the infrared thermal imaging camera system?
 
 import os
 import sys
@@ -20,7 +21,7 @@ from AoC_tools.read_data import read_data
 from AoC_tools.work_with_maps import AocMap
 
 
-def count_visible_dots(coordinates, folds):
+def fold_map(coordinates, folds):
     paper = AocMap.from_coord(coordinates)
     for fold in folds:
         instruction = fold.split('=')
@@ -28,14 +29,18 @@ def count_visible_dots(coordinates, folds):
         if axis == 'x':
             superposed = paper.create_submap(x_min=value)
             superposed.reverse(vertical=True, horizontal=False)
+            superposed.remove_columns(1, left=False)
             paper = paper.create_submap(x_max=value)
+            paper.remove_columns(1, left=False)
             paper.superpose(superposed)
         elif axis == 'y':
             superposed = paper.create_submap(y_min=value)
             superposed.reverse(vertical=False, horizontal=True)
+            superposed.remove_lines(1, top=False)
             paper = paper.create_submap(y_max=value)
+            paper.remove_lines(1, top=False)
             paper.superpose(superposed)
-    return paper.count_marker('#')
+    return paper
 
 
 def run(data_dir, star):
@@ -44,9 +49,12 @@ def run(data_dir, star):
     folds = data[1]
 
     if star == 1:  # The final answer is: 647
-        solution = count_visible_dots(coordinates, [folds[0]])
+        folded_map = fold_map(coordinates, [folds[0]])
+        solution = folded_map.count_marker('#')
     elif star == 2:  # The final answer is:
-        solution = my_func(data)
+        folded_map = fold_map(coordinates, folds)
+        folded_map.display()
+        solution = folded_map.count_marker('#')
     else:
         raise Exception('Star number must be either 1 or 2.')
 

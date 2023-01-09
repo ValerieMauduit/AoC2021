@@ -201,4 +201,12 @@ Once did, the code is so simple! It is *not* a solution during the month of Dece
 moment, my idea is really to build tools that I can use for next December.
 
 The other good idea, as usual, is not to forget to use the `sets` to reduce a list to its unique elements, or to know if
-there are some duplicate elements in a list. 
+there are some duplicate elements in a list.
+
+During the second star, I realized that:
+- When I fold, I keep the line of the line of the fold in my maps. Not good.
+- When I remove it when I get the submaps, the origins of my submaps don't belong anymore.
+- When I force the origins of my submaps after each fold, I have an error on the real data, but not on the test.
+
+Finally, I removed the last column or the last line after getting the submaps. Not perfect in my opinion, but not the
+worse to do.
