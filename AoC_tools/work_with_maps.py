@@ -1,3 +1,6 @@
+import itertools
+
+
 class AocMap:
     def __init__(self, data, position=None, origin=None, numbers=False):
         # Instantiation - Create a map from a data input of type "AoC input file data"
@@ -110,14 +113,15 @@ class AocMap:
             ]
         else:
             return [
-                self.map[self.y - self.origin[1]][x - self.origin[0]]
-                for x in range(max([self.origin[0], self.x - 1]), min([self.x + 2, self.width + self.origin[0]]))
-                if x != self.x
-            ] + [
-                self.map[y - self.origin[1]][self.x - self.origin[0]]
-                for y in range(max([self.origin[1], self.y - 1]), min([self.y + 2, self.height + self.origin[1]]))
-                if y != self.y
-            ]
+                       self.map[self.y - self.origin[1]][x - self.origin[0]]
+                       for x in range(max([self.origin[0], self.x - 1]), min([self.x + 2, self.width + self.origin[0]]))
+                       if x != self.x
+                   ] + [
+                       self.map[y - self.origin[1]][self.x - self.origin[0]]
+                       for y in
+                       range(max([self.origin[1], self.y - 1]), min([self.y + 2, self.height + self.origin[1]]))
+                       if y != self.y
+                   ]
 
     def get_neighbours_coordinates(self, diagonals=True):
         # Method to get the coordinates for all the neighbours of the position.
@@ -131,14 +135,15 @@ class AocMap:
             ]
         else:
             return [
-                [x, self.y]
-                for x in range(max([self.origin[0], self.x - 1]), min([self.x + 2, self.width + self.origin[0]]))
-                if x != self.x
-            ] + [
-                [self.x, y]
-                for y in range(max([self.origin[1], self.y - 1]), min([self.y + 2, self.height + self.origin[1]]))
-                if y != self.y
-            ]
+                       [x, self.y]
+                       for x in range(max([self.origin[0], self.x - 1]), min([self.x + 2, self.width + self.origin[0]]))
+                       if x != self.x
+                   ] + [
+                       [self.x, y]
+                       for y in
+                       range(max([self.origin[1], self.y - 1]), min([self.y + 2, self.height + self.origin[1]]))
+                       if y != self.y
+                   ]
 
     def count_neighbours(self, marker, diagonals=True):
         # Method to count a specific value of marker in the neighbourhood of the position.
@@ -203,21 +208,25 @@ class AocMap:
                 self.map = [line + ['.' for n in range(count)] for line in self.map]
                 self.width += count
 
-    def create_submap(self, x_min, x_max, y_min, y_max):
+    def create_submap(self, x_min=None, x_max=None, y_min=None, y_max=None):
         # Method to create a new AocMap instance, which represents a part of the given AocMap
         result = self.__copy__()
-        remove_left = x_min - self.origin[0]
-        if remove_left > 0:
-            result.remove_columns(remove_left)
-        remove_right = self.origin[0] + self.width - x_max - 1
-        if remove_right > 0:
-            result.remove_columns(remove_right, left=False)
-        remove_top = y_min - self.origin[1]
-        if remove_top > 0:
-            result.remove_lines(remove_top)
-        remove_bottom = self.origin[1] + self.height - y_max - 1
-        if remove_bottom > 0:
-            result.remove_lines(remove_bottom, top=False)
+        if x_min is not None:
+            remove_left = x_min - self.origin[0]
+            if remove_left > 0:
+                result.remove_columns(remove_left)
+        if x_max is not None:
+            remove_right = self.origin[0] + self.width - x_max - 1
+            if remove_right > 0:
+                result.remove_columns(remove_right, left=False)
+        if y_min is not None:
+            remove_top = y_min - self.origin[1]
+            if remove_top > 0:
+                result.remove_lines(remove_top)
+        if y_max is not None:
+            remove_bottom = self.origin[1] + self.height - y_max - 1
+            if remove_bottom > 0:
+                result.remove_lines(remove_bottom, top=False)
         return result
 
     def reverse(self, vertical=True, horizontal=False):
@@ -233,14 +242,23 @@ class AocMap:
             self.origin = [self.origin[0], self.origin[1] - self.height + 1]
             self.y = self.height - self.y + self.origin[1]
 
-    # def superpose(self, other_map, match_corner='top-left', priority='#.'):
-    #     if match_corner == 'top-left':
-    #         # TODO
-    #     elif match_corner == 'bottom-left':
-    #         # TODO
-    #     elif match_corner == 'top-right':
-    #         # TODO
-    #     elif match_corner == 'bottom_right':
-    #         # TODO
-    #     else:
-    #         raise Exception('The matching corner must be one of: top-left, bottom-left, top-right, or bottom_right')
+    def get_marker_coords(self, marker):
+        # To get all the coordinates relative to a given marker
+        coords = []
+        for y in range(self.origin[1], self.origin[1] + self.height):
+            for x in range(self.origin[0], self.origin[0] + self.width):
+                if self.get_point([x, y]) == marker:
+                    coords += [[x, y]]
+        return coords
+
+    def superpose(self, by, transparent='.'):
+        # Superpose a map by another: the origins of the maps are taken in account to know the overlaps. Empty lines and
+        # columns are added if needed. At the end, the resulted map is a larger rectangle. The transparent marker
+        # indicates which one is not taken into account in the resulted map.
+        self.add_empty_lines(self.origin[1] - by.origin[1], top=True)
+        self.add_empty_lines(by.origin[1] - self.origin[1] + by.height - self.height, top=False)
+        self.add_empty_columns(self.origin[0] - by.origin[0], left=True)
+        self.add_empty_columns(by.origin[0] - self.origin[0] + by.width - self.width, left=False)
+        non_transparent = set([x for x in itertools.chain(*by.map) if x != transparent])
+        for marker in non_transparent:
+            self.set_points(by.get_marker_coords(marker), marker)

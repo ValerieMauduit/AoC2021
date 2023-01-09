@@ -224,22 +224,22 @@ def test_create_submap(mocked_map, limits, new_map):
 
 
 reversed_maps = [(
-        False, False,
-        [['.', '.', '.', '.', '#', '.'], ['.', '.', '.', '#', '#', '.'], ['#', '.', '.', '.', '.', '.']],
-        [1, 1], [5, 1]
-    ), (
-        False, True,
-        [['#', '.', '.', '.', '.', '.'], ['.', '.', '.', '#', '#', '.'], ['.', '.', '.', '.', '#', '.']],
-        [1, -1], [5, 1]
-    ), (
-        True, False,
-        [['.', '#', '.', '.', '.', '.'], ['.', '#', '#', '.', '.', '.'], ['.', '.', '.', '.', '.', '#']],
-        [-4, 1], [-3, 1]
-    ), (
-        True, True,
-        [['.', '.', '.', '.', '.', '#'], ['.', '#', '#', '.', '.', '.'], ['.', '#', '.', '.', '.', '.']],
-        [-4, -1], [-3, 1]
-    )]
+    False, False,
+    [['.', '.', '.', '.', '#', '.'], ['.', '.', '.', '#', '#', '.'], ['#', '.', '.', '.', '.', '.']],
+    [1, 1], [5, 1]
+), (
+    False, True,
+    [['#', '.', '.', '.', '.', '.'], ['.', '.', '.', '#', '#', '.'], ['.', '.', '.', '.', '#', '.']],
+    [1, -1], [5, 1]
+), (
+    True, False,
+    [['.', '#', '.', '.', '.', '.'], ['.', '#', '#', '.', '.', '.'], ['.', '.', '.', '.', '.', '#']],
+    [-4, 1], [-3, 1]
+), (
+    True, True,
+    [['.', '.', '.', '.', '.', '#'], ['.', '#', '#', '.', '.', '.'], ['.', '#', '.', '.', '.', '.']],
+    [-4, -1], [-3, 1]
+)]
 
 
 @pytest.mark.parametrize("vertical, horizontal, result_map, origin, coord", reversed_maps)
@@ -249,3 +249,33 @@ def test_reverse(mocked_map, vertical, horizontal, result_map, origin, coord):
     assert mocked_map.map == result_map
     assert mocked_map.origin == origin
     assert [mocked_map.x, mocked_map.y] == coord
+
+
+def test_get_marker_coords(mocked_map):
+    hash_positions = mocked_map.get_marker_coords('#')
+    assert len(hash_positions) == 4
+    assert [4, 0] in hash_positions
+    assert [3, 1] in hash_positions
+    assert [4, 1] in hash_positions
+    assert [0, 2] in hash_positions
+
+
+superpositions = [(
+    work_with_maps.AocMap(['x...', '.x..', '..x.', '...x'], origin=[0, 0]),
+    [
+        ['x', '.', '.', '.', '#', '.'], ['.', 'x', '.', '#', '#', '.'],
+        ['#', '.', 'x', '.', '.', '.'], ['.', '.', '.', 'x', '.', '.']
+    ]
+), (
+    work_with_maps.AocMap(['x...', '.x..', '.yx.', '...x'], origin=[3, -1]),
+    [
+        ['.', '.', '.', 'x', '.', '.', '.'], ['.', '.', '.', '.', 'x', '.', '.'],
+        ['.', '.', '.', '#', 'y', 'x', '.'], ['#', '.', '.', '.', '.', '.', 'x']
+    ]
+)]
+
+
+@pytest.mark.parametrize("by_map, result_map", superpositions)
+def test_superpose(mocked_map, by_map, result_map):
+    mocked_map.superpose(by_map)
+    assert mocked_map.map == result_map
