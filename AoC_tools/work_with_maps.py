@@ -1,4 +1,5 @@
 import itertools
+import numpy as np
 
 
 class AocMap:
@@ -49,16 +50,20 @@ class AocMap:
         map_from_coord.set_points(coordinates)
         return map_from_coord
 
-    def __copy__(self):
+    def copy(self):
         cls = self.__class__
         result = cls.__new__(cls)
         result.__dict__.update(self.__dict__)
         return result
 
-    def display(self):
+    def display(self, numbers=False):
         # Method to display the map in the terminal
-        for line in self.map:
-            print("".join([str(x) for x in line]))
+        if numbers:
+            for line in self.map:
+                print("".join([f"{x: >3d}" for x in line]))
+        else:
+            for line in self.map:
+                print("".join([str(x) for x in line]))
 
     def get_position(self):
         # Method to get the position coordinates
@@ -262,3 +267,29 @@ class AocMap:
         non_transparent = set([x for x in itertools.chain(*by.map) if x != transparent])
         for marker in non_transparent:
             self.set_points(by.get_marker_coords(marker), marker)
+
+    # TODO: write the test
+    def glue_map(self, glued, direction='R'):
+        # Update the map by adding another one on the right, the left, the top or the bottom
+        if (direction in ['R', 'L']) & (glued.height != self.height):
+            raise Exception("Cannot glue the map horizontally, its height is not identical to the initial one's.")
+        if (direction in ['U', 'D']) & (glued.width != self.width):
+            raise Exception("Cannot glue the map vertically, its width is not identical to the initial one's.")
+        if direction == 'R':
+            self.map = [self.map[y] + glued.map[y] for y in range(self.height)]
+            self.width += glued.width
+        elif direction == 'L':
+            self.map = [glued.map[y] + self.map[y] for y in range(self.height)]
+            self.width += glued.width
+            self.origin = [self.origin[0] + glued.width, self.origin[1]]
+            self.x += glued.x
+        elif direction == 'D':
+            self.map += glued.map
+            self.height += glued.height
+        elif direction == 'U':
+            self.map = glued.map + self.map
+            self.height += glued.height
+            self.origin = [self.origin[0], self.origin[1] + glued.height]
+            self.y += glued.y
+        else:
+            raise Exception("The direction must be one of the following: R, L, U, D.")
