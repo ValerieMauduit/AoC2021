@@ -242,4 +242,13 @@ bad university (adaptable for each country, in France we tell it with Polytechni
 from):
 - The engineer from Centrale designs a bridge. The bridge collapses and she doesn't know why.
 - The engineer from Polytechnique designs a bridge.  The bridge collapses and she does know why.
-- The engineer from the other school (me!) designs a bridge. The bridge doesn't collapse but she doesn't know why.
+- The engineer from the other school (me!) designs a bridge. The bridge doesn't collapse, but she doesn't know why.
+
+### Day 15: Chiton
+
+The goal is to find the path that minimizes a score, in a map of numbers. I got it very fast but I was surprised: why is
+only once check in all the initial map enough?
+
+But concerning the second star... I cannot be proud of it. I guessed first 2939, which was too high. The 2935, with a
+while loop to try to reduce my score. It was too low. But the two values are so close that... I got the final answer
+with a dichotomy process.
