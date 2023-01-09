@@ -23,30 +23,36 @@ import AoC_tools.work_with_lists as aoc_lists
 
 
 def insertions(template, rules, steps=1):
-    polymer = template
+    polymer = aoc_lists.sliding_windows(template, 2)
+    pairs = {pair: 0 + aoc_lists.count_value(pair, polymer) for pair in rules}
     for step in range(steps):
-        pairs = aoc_lists.sliding_windows(polymer, 2)
-        inserted = [rules[pair] for pair in pairs]
-        polymer = ''.join(aoc_lists.merge_lists(aoc_lists.str_to_list(polymer[:-1]), inserted)) + polymer[-1]
-    return polymer
+        new_pairs = {pair: 0 for pair in rules}
+        for pair in pairs:
+            new_pairs[pair[0] + rules[pair]] += pairs[pair]
+            new_pairs[rules[pair] + pair[1]] += pairs[pair]
+        pairs = new_pairs
+    return pairs
 
 
-def score(polymer):
-    print(polymer)
-    print(aoc_lists.most_common(polymer))
-    print(aoc_lists.least_common(polymer))
-    return aoc_lists.most_common(polymer)[1] - aoc_lists.least_common(polymer)[1]
+def score(pairs, initial):
+    count_letters = {letter: 0 for letter in set(aoc_lists.str_to_list(''.join(pairs.keys())))}
+    for pair in pairs:
+        count_letters[pair[0]] += pairs[pair]
+        count_letters[pair[1]] += pairs[pair]
+    count_letters[initial[0]] += 1
+    count_letters[initial[-1]] += 1
+    return int((max(count_letters.values()) - min(count_letters.values())) / 2)
 
 
 def run(data_dir, star):
     data = read_data(f'{data_dir}/input-day14.txt', numbers=False, by_block=True)
-    polymer_template = data[0]
+    polymer_template = data[0][0]
     insertion_rules = {rule[0]: rule[1] for rule in [[x for x in line.split(' -> ')] for line in data[1]]}
 
     if star == 1:  # The final answer is 2233
-        solution = score(insertions(polymer_template, insertion_rules, 11))
-    elif star == 2:  # The final answer is:
-        solution = my_func(data)
+        solution = score(insertions(polymer_template, insertion_rules, 10), polymer_template)
+    elif star == 2:  # The final answer is: 2884513602164
+        solution = score(insertions(polymer_template, insertion_rules, 40), polymer_template)
     else:
         raise Exception('Star number must be either 1 or 2.')
 

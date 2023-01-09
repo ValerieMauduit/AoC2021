@@ -216,3 +216,19 @@ worse to do.
 I added some list facilities, and I think that they are pretty cool. But I have an error in the number of steps, and I
 don't really get it: I need 10 steps in the test of the day, but 11 to get the right answer in the real problem. Let's
 let as it for the moment.
+
+The second star is not surprising: more steps. But even on the test example, it doesn't run immediately. So I need to
+find another way to do it, and I guess that as always, I would need to use a dict.
+
+I fixed it for a dict. To get the dict of the polymer step n was OK. But to calculate the score was more complicated. I
+first calculated the occurrences of the pairs, which is not what we want. The occurrences of each element in the
+pairs. But it is almost the double of the values I need. *Almost* is the problem: I count twice each element, except the
+first and the last one. When I realized it, I added the first and the last element of the polymer template, before
+dividing the score by two! Yes, because the first and the last element never change during the polymerization. OK, I
+obtained a result. And guess what? My first star value was too high... because now, I need to use the real number of
+steps. I fixed a bug, but I don't know how. It is like the story of the engineers comings from a good, a medium and a
+bad university (adaptable for each country, in France we tell it with Polytechnique, Centrale and the one the teller is
+from):
+- The engineer from Centrale designs a bridge. The bridge collapses and she doesn't know why.
+- The engineer from Polytechnique designs a bridge.  The bridge collapses and she does know why.
+- The engineer from the other school (me!) designs a bridge. The bridge doesn't collapse but she doesn't know why.
