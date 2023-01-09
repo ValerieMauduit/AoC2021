@@ -23,7 +23,7 @@ parent_dir = os.path.dirname(current_dir)
 sys.path.append(parent_dir)
 
 from AoC_tools.read_data import read_data
-from AoC_tools.work_with_graphs import AocGraph
+from AoC_tools.work_with_graphs import AocGraph, next_paths
 
 
 def count_paths(caves, from_node='start', to_node='end', forbidden=None):
@@ -43,53 +43,22 @@ def count_paths(caves, from_node='start', to_node='end', forbidden=None):
         return total
 
 
-# TODO: why do I allow to visit twice all the little cave?
-def paths_visit_twice(
-        caves, from_node='start', to_node='end', visited_small_caves=None, allow_two_visits=True,
-        forbidden_caves=None, path=None
-):
-    if path is None:
-        path = []
-    if visited_small_caves is None:
-        visited_small_caves = []
-    if forbidden_caves is None:
-        forbidden_caves = ['start']
-    if from_node == to_node:
-        path += [to_node]
-        return [path]
-    else:
-        paths = []
-        if from_node.lower() == from_node:
-            if allow_two_visits & (from_node in visited_small_caves):
-                allow_two_visits = False
-                forbidden_in_branch = forbidden_caves + visited_small_caves + [from_node]
-            else:
-                allow_two_visits = True
-                forbidden_in_branch = forbidden_caves
-            visited_in_branch = visited_small_caves + [from_node]
+def all_paths_twice(graph, from_node, to_node):
+    in_progress = [{'path': [from_node], 'forbidden': ['start']}]
+    paths = []
+    while len(in_progress) > 0:
+        from_node = in_progress[0]['path'][-1]
+        if from_node == to_node:
+            paths += [in_progress[0]['path']]
+            in_progress = in_progress[1:]
         else:
-            forbidden_in_branch = forbidden_caves
-            visited_in_branch = visited_small_caves
-        for neighbour in [cave for cave in caves.get_neighbours(from_node, True) if cave not in forbidden_caves]:
-            paths += paths_visit_twice(
-                caves, neighbour, to_node, visited_in_branch, allow_two_visits,
-                forbidden_in_branch, path + [from_node]
-            )
-        return paths
-
-
-def count_paths_visit_twice(caves):
-    too_many_paths = paths_visit_twice(caves)
-    count = 0
-    small_caves = [cave for cave in caves.nodes if cave.lower() == cave]
-    for path in too_many_paths:
-        doubles = 0
-        for cave in small_caves:
-            if sum([node == cave for node in path]) > 1:
-                doubles += 1
-        if doubles < 2:
-            count += 1
-    return count
+            small_caves = [cave for cave in in_progress[0]['path'] if cave.lower() == cave]
+            if (from_node.lower() == from_node) & (len(small_caves) != len(set(small_caves))):
+                forbidden = small_caves
+            else:
+                forbidden = in_progress[0]['forbidden']
+            in_progress = next_paths({'path': in_progress[0]['path'], 'forbidden': forbidden}, graph) + in_progress[1:]
+    return paths
 
 
 def run(data_dir, star):
@@ -97,8 +66,8 @@ def run(data_dir, star):
 
     if star == 1:  # The final answer is: 5576
         solution = count_paths(AocGraph(data))
-    elif star == 2:  # The final answer is:
-        solution = count_paths_visit_twice(AocGraph(data))
+    elif star == 2:  # The final answer is: 152837
+        solution = len(all_paths_twice(AocGraph(data), 'start', 'end'))
     else:
         raise Exception('Star number must be either 1 or 2.')
 

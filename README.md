@@ -192,6 +192,21 @@ Second star: I **really** need to go back on it and fix! It is so ugly. I don't 
 authorize going twice in any small cave. And then, I post-process the result to count only the travels when I go twice
 in at most one small cave.
 
-```python
-# TODO: warning, ugly code
-```
+Finally, I fixed it, by using the now famous deeper first. So nice and more understandable (at least for me).
+
+### Day 13: Transparent Origami
+
+OK, as usual: first create interesting methods for mt `AocMap`: extract a submap, reverse a map, superpose two maps.
+Once did, the code is so simple! It is *not* a solution during the month of December, because it is longer at the
+moment, my idea is really to build tools that I can use for next December.
+
+The other good idea, as usual, is not to forget to use the `sets` to reduce a list to its unique elements, or to know if
+there are some duplicate elements in a list.
+
+During the second star, I realized that:
+- When I fold, I keep the line of the line of the fold in my maps. Not good.
+- When I remove it when I get the submaps, the origins of my submaps don't belong anymore.
+- When I force the origins of my submaps after each fold, I have an error on the real data, but not on the test.
+
+Finally, I removed the last column or the last line after getting the submaps. Not perfect in my opinion, but not the
+worse to do.
