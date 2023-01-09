@@ -192,6 +192,13 @@ Second star: I **really** need to go back on it and fix! It is so ugly. I don't 
 authorize going twice in any small cave. And then, I post-process the result to count only the travels when I go twice
 in at most one small cave.
 
-```python
-# TODO: warning, ugly code
-```
+Finally, I fixed it, by using the now famous deeper first. So nice and more understandable (at least for me).
+
+### Day 13: Transparent Origami
+
+OK, as usual: first create interesting methods for mt `AocMap`: extract a submap, reverse a map, superpose two maps.
+Once did, the code is so simple! It is *not* a solution during the month of December, because it is longer at the
+moment, my idea is really to build tools that I can use for next December.
+
+The other good idea, as usual, is not to forget to use the `sets` to reduce a list to its unique elements, or to know if
+there are some duplicate elements in a list. 
