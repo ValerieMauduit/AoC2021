@@ -210,3 +210,9 @@ During the second star, I realized that:
 
 Finally, I removed the last column or the last line after getting the submaps. Not perfect in my opinion, but not the
 worse to do.
+
+### Day 14: Extended Polymerization
+
+I added some list facilities, and I think that they are pretty cool. But I have an error in the number of steps, and I
+don't really get it: I need 10 steps in the test of the day, but 11 to get the right answer in the real problem. Let's
+let as it for the moment.
