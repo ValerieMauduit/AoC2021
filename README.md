@@ -252,3 +252,38 @@ only once check in all the initial map enough?
 But concerning the second star... I cannot be proud of it. I guessed first 2939, which was too high. The 2935, with a
 while loop to try to reduce my score. It was too low. But the two values are so close that... I got the final answer
 with a dichotomy process.
+
+### Day 17: Trick Shot
+
+The goal here is to find out the best way to launch a projectile, in order to:
+- reach a given zone
+- maximize the altitude reached before going down
+
+I thought that it would be easy. But in fact no. First, I needed a new move in my `AocMap` and I thought "Great! I will
+have a new cool method for the displacements in my map." I struggled. Because I had an error in taking into account an
+origin of my map which is not [0, 0]. Because I tested only on origin changes where `x_origin == y_origin`. And I had
+mixed the x and the y in a formula.
+
+Then I modelled a trajectory and it was OK. Then I tried to find the best one. My main problems:
+- When the place above the origin wasn't height enough, it blocked and the result was false,
+- When I increased my map in all directions, it was too large, I had to figure out which are *really* the directions I
+  wanted to increase (above the start of the trajectory, and in a small measure, on the right of the map.)
+- What is the stop condition to consider that the initial vertical speed is too high? I decided to check if I either
+  finish in the target, either finish with my max reachable x and a y which in below the target. First thing: to have a
+  stop condition, I had to inverse my continue condition, and I made a lot of errors when doing it. And then... I
+  discovered that it was possible to go in one of these conditions at a moment, but a slightly higher initial vertical
+  speed could reach the target zone again...
+
+My new idea is that the problem, actually, is solvable by arithmetic operations. Let's call the initial speed [vx, vy],
+and the step n.
+- x: the positions are vx * (vx + 1) / 2 - (vx - n + 1) * (vx - n) / 2 until n > vx, then it is vx * (vx + 1) / 2
+- maximal height: it is vy * (vy + 1) / 2
+- y: we start to decrease (from the maximal height) when n > vy and then, the global decrease from this point is
+  (n - vy) * (n - vy + 1) / 2 at each step.
+
+With these values, I should be able to:
+- determine the values of vx when we horizontally reach the target zone
+- determine the values of vy when we vertically reach the target zone
+
+In the end, I determined all the vy to reach the target zone vertically and then tested if there was a vx value
+available to reach the zone at the same step. Some formulas on paper, no map. OK...
