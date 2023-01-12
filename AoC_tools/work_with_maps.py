@@ -1,5 +1,4 @@
 import itertools
-import numpy as np
 
 
 class AocMap:
@@ -73,7 +72,7 @@ class AocMap:
         # Method to change x and y by indicating the new position
         self.x, self.y = position[0], position[1]
 
-    def move(self, direction):
+    def one_move(self, direction):
         # Method to change the position, but by indicating a direction (like 'U') and move for 1 cell
         displacements = {
             'U': [0, -1], 'D': [0, 1], 'L': [-1, 0], 'R': [1, 0],
@@ -83,9 +82,20 @@ class AocMap:
             self.x += displacements[direction][0]
             self.y += displacements[direction][1]
             self.x = min([max([self.origin[0], self.x]), self.origin[0] + self.width - 1])
-            self.y = min([max([self.origin[0], self.y]), self.origin[1] + self.height - 1])
+            self.y = min([max([self.origin[1], self.y]), self.origin[1] + self.height - 1])
         else:
             raise Exception(f"The direction {direction} is not recognized by the system.")
+
+    def move(self, displacements):
+        # Method to change the position, by indicating many displacements in a dict
+        opposites = {'D': 'U', 'U': 'D', 'R': 'L', 'L': 'R'}
+        for direction in displacements:
+            if displacements[direction] >= 0:
+                real_direction, value = direction, displacements[direction]
+            else:
+                real_direction, value = opposites[direction], - displacements[direction]
+            for n in range(value):
+                self.one_move(real_direction)
 
     def get_point(self, position):
         # Method to get the value in the map for a specific set of coordinates [x, y]
@@ -215,7 +225,7 @@ class AocMap:
 
     def create_submap(self, x_min=None, x_max=None, y_min=None, y_max=None):
         # Method to create a new AocMap instance, which represents a part of the given AocMap
-        result = self.__copy__()
+        result = self.copy()
         if x_min is not None:
             remove_left = x_min - self.origin[0]
             if remove_left > 0:
