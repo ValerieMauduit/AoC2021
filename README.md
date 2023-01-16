@@ -297,3 +297,11 @@ were important:
 Honestly, sometimes coding in Pycharm, with Pytest, is not the most comfortable. Then I code in Jupyter and I output
 many things. Here, I even copied my results in OpenOffice Calc and checked one by one my results with the forecasted one
 to understand that I had some doubles, then a forgotten number of steps...
+
+### Day 18: Snailfish
+
+Here we have some specific rules to a snailfish addition. It was long to understand the rules. I also checked manually
+on an example, to be sure I understood them correctly. I see these nested lists as a list of numbers with altitudes. I
+will try to work this way. Let's see.
+
+And it worked, after some iterations on small bugs, like "is it the index, or the index + 1?"
