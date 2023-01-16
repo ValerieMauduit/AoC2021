@@ -287,3 +287,13 @@ With these values, I should be able to:
 
 In the end, I determined all the vy to reach the target zone vertically and then tested if there was a vx value
 available to reach the zone at the same step. Some formulas on paper, no map. OK...
+
+Then I thought that the second part, count all the initial velocities to reach the goal, would be easy. But some points
+were important:
+- I counted the number of steps to reach the target. I had to avoid counting twice when I reach the target and the next
+  step is again in the target.
+- Be careful of some thresholds in the loops, as always.
+
+Honestly, sometimes coding in Pycharm, with Pytest, is not the most comfortable. Then I code in Jupyter and I output
+many things. Here, I even copied my results in OpenOffice Calc and checked one by one my results with the forecasted one
+to understand that I had some doubles, then a forgotten number of steps...

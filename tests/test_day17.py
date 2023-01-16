@@ -11,3 +11,7 @@ from all_days import day17
 
 def test_best_score():
     assert day17.best_score({'x': [20, 30], 'y': [-10, -5]}) == 45
+
+
+def test_all_possibilities():
+    assert day17.all_initial_velocities({'x': [20, 30], 'y': [-10, -5]}) == 112
