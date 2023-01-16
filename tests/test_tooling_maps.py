@@ -64,20 +64,46 @@ def test_get_position(mocked_map):
     assert mocked_map.get_position() == [5, 1]
 
 
-moves = [
+simple_moves = [
     ('U', (0, 0), (5, 0), (0, 1), (5, 1)), ('D', (0, 1), (5, 1), (0, 2), (5, 2)),
     ('R', (1, 0), (5, 0), (1, 2), (5, 2)), ('L', (0, 0), (4, 0), (0, 2), (4, 2))
 ]
 
 
-@pytest.mark.parametrize("direction, from_00, from_50, from_02, from_52", moves)
-def test_move(mocked_map, direction, from_00, from_50, from_02, from_52):
+@pytest.mark.parametrize("direction, from_00, from_50, from_02, from_52", simple_moves)
+def test_one_move(mocked_map, direction, from_00, from_50, from_02, from_52):
     positions = {'00': [0, 0], '50': [5, 0], '02': [0, 2], '52': [5, 2]}
     expected = {'00': from_00, '50': from_50, '02': from_02, '52': from_52}
     for test in positions:
         mocked_map.set_position(positions[test])
-        mocked_map.move(direction)
+        mocked_map.one_move(direction)
         assert (mocked_map.x, mocked_map.y) == expected[test]
+
+
+other_moves = [
+    ('U', (3, -1), (3, -1)), ('U', (2, 1), (2, 0)),
+    ('D', (3, -1), (3, 0)), ('D', (3, 1), (3, 1)),
+    ('R', (3, -1), (4, -1)), ('R', (4, 0), (4, 0)),
+    ('L', (3, -1), (2, -1)), ('L', (-1, 0), (-1, 0)),
+]
+
+
+@pytest.mark.parametrize("direction, position, expected", other_moves)
+def test_one_move_with_origin(mocked_map, direction, position, expected):
+    mocked_map.origin = [-1, -1]
+    mocked_map.set_position(position)
+    mocked_map.one_move(direction)
+    assert (mocked_map.x, mocked_map.y) == expected
+
+
+moves = [({'U': 2, 'R': 2}, (5, 0)), ({'L': 3}, (1, 1)), ({'D': 1, 'R': -5}, (0, 2))]
+
+
+@pytest.mark.parametrize("displacements, position", moves)
+def test_move(mocked_map, displacements, position):
+    mocked_map.set_position([4, 1])
+    mocked_map.move(displacements)
+    assert (mocked_map.x, mocked_map.y) == position
 
 
 points = [([0, 0], '.', '.'), ([3, 1], '#', '.')]
