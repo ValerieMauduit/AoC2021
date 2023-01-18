@@ -107,12 +107,20 @@ def snailfish_addition(data):
     return result
 
 
-    elif star == 2:  # The final answer is:
-        solution = my_func(data)
+def best_magnitude(data):
+    best_value = 0
+    for left_side in data:
+        for right_side in [x for x in data if x != left_side]:
+            best_value = max([best_value, SnailfishNumber(left_side).add(SnailfishNumber(right_side)).magnitude()])
+    return best_value
+
+
 def run(data_dir, star):
     data = read_data(f'{data_dir}/input-day18.txt', numbers=False)
     if star == 1:  # The final answer is: 3981
         solution = snailfish_addition(data).magnitude()
+    elif star == 2:  # The final answer is: 4687
+        solution = best_magnitude(data)
     else:
         raise Exception('Star number must be either 1 or 2.')
 

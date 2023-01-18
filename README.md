@@ -305,3 +305,6 @@ on an example, to be sure I understood them correctly. I see these nested lists 
 will try to work this way. Let's see.
 
 And it worked, after some iterations on small bugs, like "is it the index, or the index + 1?"
+
+The second star needed many snailfish additions. I don't know why actually I was so good in it. But I had no problem to
+perform all of them very quickly.
